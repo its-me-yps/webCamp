@@ -22,6 +22,11 @@ func main() {
 		if err != nil {
 			log.Fatal("Error retrieving:", err)
 		}
+
+		err = utils.RetrieveFromFile("./data/rawData.json", &raw)
+		if err != nil {
+			log.Fatal("Error retrieving:", err)
+		}
 	}
 
 	// Command Line arguments
@@ -31,9 +36,6 @@ func main() {
 		server.Server1(grouped, raw, "8080")
 	} else if args[1] == "2" {
 		server.Server2(grouped, raw, "3000")
-	} else if args[1] == "a" {
-		go server.Server1(grouped, raw, "8080")
-		go server.Server2(grouped, raw, "3000")
 	} else {
 		log.Println("Invalid Argument")
 	}
