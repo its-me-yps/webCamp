@@ -32,6 +32,8 @@ func main() {
 	// Command Line arguments
 	args := os.Args
 
+	os.Setenv("SECRET", "SPRING_CAMP")
+
 	if args[1] == "1" {
 		server.Server1(grouped, raw, "8080")
 	} else if args[1] == "2" {

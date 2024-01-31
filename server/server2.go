@@ -1,6 +1,7 @@
 package server
 
 import (
+	// "os"
 	model "wingiesOrNot/models"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +11,6 @@ import (
 // utility of framework
 func Server2(groupedData map[string]model.Hall, rawData model.Students, port string) {
 	r := gin.Default()
-
-	r.POST("/wingiesOrNot", func(c *gin.Context) {
-		postReq2(c, rawData)
-	})
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, groupedData)
@@ -32,6 +29,12 @@ func Server2(groupedData map[string]model.Hall, rawData model.Students, port str
 
 	r.GET("/:hall/:wing/:room", func(c *gin.Context) {
 		getReq2(c, groupedData)
+	})
+
+	r.Use(authenticateReq)
+
+	r.POST("/wingiesOrNot", func(c *gin.Context) {
+		postReq2(c, rawData)
 	})
 
 	r.Run(":" + port)
