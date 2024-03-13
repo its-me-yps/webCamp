@@ -51,3 +51,48 @@ func postReq2(c *gin.Context, raw model.Students) {
 		c.String(http.StatusOK, "NO")
 	}
 }
+func findRoommate(c *gin.Context, groupedData map[string]model.Hall) {
+	var reqBody struct {
+		ID string `json:"id"`
+	}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+		return
+	}
+	studentID := reqBody.ID
+
+	var studentDetails model.Student
+
+	for _, hall := range groupedData {
+
+		for _, wing := range hall {
+			for _, room := range wing {
+
+				for _, student := range room {
+					if student.Id == studentID {
+						studentDetails = student
+						break
+					}
+				}
+			}
+		}
+	}
+
+	if studentDetails == (model.Student{}) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Student not found"})
+		return
+	}
+	var roommates []model.Student
+
+	hall := studentDetails.Hall
+	room := studentDetails.Room[3:]
+	wing := studentDetails.Room[:3]
+	fmt.Printf("h-%v , r-%v,w-%v\n", hall, room, wing)
+
+	for _, student := range groupedData[hall][wing][room] {
+		if student.Id != studentID {
+			roommates = append(roommates, student)
+		}
+	}
+	c.JSON(http.StatusOK, roommates)
+}
