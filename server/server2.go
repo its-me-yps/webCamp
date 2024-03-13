@@ -30,6 +30,9 @@ func Server2(groupedData map[string]model.Hall, rawData model.Students, port str
 	r.GET("/:hall/:wing/:room", func(c *gin.Context) {
 		getReq2(c, groupedData)
 	})
+	r.GET("/findroommate", func(ctx *gin.Context) {
+		findRoommate(ctx, groupedData)
+	})
 
 	r.Use(authenticateReq)
 
