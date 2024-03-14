@@ -52,7 +52,7 @@ func postReq2(c *gin.Context, raw model.Students) {
 	}
 }
 
-func getWing(c *gin.Context, raw model.Students) model.Student {
+func getStudentDetailsByID(c *gin.Context, raw model.Students) model.Student {
 	i := c.Param("id")
 	var student model.Student
 	for _, s := range raw {
