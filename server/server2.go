@@ -15,6 +15,12 @@ func Server2(groupedData map[string]model.Hall, rawData model.Students, port str
 		postReq2(c, rawData)
 	})
 
+	r.GET("/getWingies/:id", func(c *gin.Context) {
+		student := getWing(c, rawData)
+		if (student != model.Student{}) {
+			fetchWingies(c, groupedData, student)
+		}
+	})
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, groupedData)
 	})
